@@ -1,3 +1,31 @@
+.git
+venv
+src/iva_applications.egg-info/
+
+# игнорировать __pycache__, в том числе вложенные
+__pycache__
+src/**/__pycache__
+tests/**/__pycache__
+# игнорировать .vscode, в том числе вложенные
+.vscode
+src/**/.vscode
+tests/**/.vscode
+# игнорировать .mypy_cache, в том числе вложенные
+.mypy_cache
+src/**/.mypy_cache
+tests/**/.mypy_cache
+# игнорировать веса
+*.h5
+src/**/*.h5
+tests/**/*.h5
+# игнорировать объектные (c++), статические библиотеки (c++) и временные файлы
+*.[oa]
+*~
+src/**/*.[oa]
+src/**/*~
+tests/**/*.[oa]
+tests/**/*~
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
