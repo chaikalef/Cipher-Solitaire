@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
 from copy import deepcopy
+from typing import List
 
 
 class Solitaire():
     def __init__(self,
-                 key=[0, 1, 2, 3],
-                 a_pos=None,
-                 b_pos=None,
-                 сardinality=26):
-        self.a_pos = a_pos if not(a_pos is None) else len(key) - 2
-        self.b_pos = b_pos if not(b_pos is None) else len(key) - 1
+                 key: List[int] = [0, 1, 2, 3],
+                 a_pos: int = -2,
+                 b_pos: int = -1,
+                 сardinality: int = 4):
+        self.key = deepcopy(key)
+        self.a_pos = a_pos if a_pos != -2 else len(self.key) - 2
+        self.b_pos = b_pos if b_pos != -1 else len(self.key) - 1
         self.cardinality = сardinality
 
     def __obj_to_pos(self,
-                     state,
-                     idx):
+                     state: List,
+                     idx: int):
         if (idx >= len(state)) or (idx < -len(state)):
             print('Exception __obj_to_pos')
             return None
@@ -25,9 +27,9 @@ class Solitaire():
         return state[idx] + 1
 
     def __swap(self,
-               state,
-               idx_left,
-               idx_right):
+               state: List,
+               idx_left: int,
+               idx_right: int):
         if idx_right <= idx_left:
             print('Exception __swap')
             return None
@@ -54,11 +56,11 @@ class Solitaire():
         return res
 
     def __tail_to_head(self,
-                       state):
+                       state: List):
         new_state = []
         new_state.append(state[0])
         new_state.append(state[-1])
-        new_state.append(state[1:-1])
+        new_state.extend(state[1:-1])
 
         if len(new_state) != len(state):
             print('Exception __tail_to_head')
@@ -83,10 +85,10 @@ class Solitaire():
         return new_state
 
     def __tail_to_head_new(self,
-                           state):
+                           state: List):
         new_state = []
         new_state.append(state[-1])
-        new_state.append(state[:-1])
+        new_state.extend(state[:-1])
 
         if len(new_state) != len(state):
             print('Exception __tail_to_head')
@@ -107,7 +109,7 @@ class Solitaire():
         return new_state
 
     def func1(self,
-              state):
+              state: List):
         cur_state = deepcopy(state)
 
         if self.a_pos == len(cur_state) - 1:
@@ -118,7 +120,7 @@ class Solitaire():
                            self.a_pos + 1)
 
     def func1_new(self,
-                  state):
+                  state: List):
         cur_state = deepcopy(state)
 
         if self.a_pos == len(cur_state) - 1:
@@ -129,7 +131,7 @@ class Solitaire():
                            self.a_pos + 1)
 
     def func2(self,
-              state):
+              state: List):
         cur_state = deepcopy(state)
 
         if self.b_pos == len(cur_state) - 1:
@@ -153,7 +155,7 @@ class Solitaire():
                                self.b_pos + 1)
 
     def func2_new(self,
-                  state):
+                  state: List):
         cur_state = deepcopy(state)
 
         if self.b_pos == len(cur_state) - 1:
@@ -174,29 +176,27 @@ class Solitaire():
                                self.b_pos + 1)
 
     def func3(self,
-              state):
+              state: List):
         cur_state = deepcopy(state)
         new_state = []
 
         if self.a_pos < self.b_pos:
-            new_state.append(cur_state[self.b_pos:])
+            new_state.extend(cur_state[self.b_pos + 1:])
             a_pos = len(new_state)
-            new_state.append(cur_state[self.a_pos])
-            new_state.append(cur_state[self.a_pos:self.b_pos])
+            new_state.extend(cur_state[self.a_pos:self.b_pos])
             b_pos = len(new_state)
             new_state.append(cur_state[self.b_pos])
-            new_state.append(cur_state[:self.a_pos])
+            new_state.extend(cur_state[:self.a_pos])
             self.a_pos = a_pos
             self.b_pos = b_pos
 
         elif self.b_pos < self.a_pos:
-            new_state.append(cur_state[self.a_pos:])
+            new_state.extend(cur_state[self.a_pos + 1:])
             b_pos = len(new_state)
-            new_state.append(cur_state[self.b_pos])
-            new_state.append(cur_state[self.b_pos:self.a_pos])
+            new_state.extend(cur_state[self.b_pos:self.a_pos])
             a_pos = len(new_state)
             new_state.append(cur_state[self.a_pos])
-            new_state.append(cur_state[:self.b_pos])
+            new_state.extend(cur_state[:self.b_pos])
             self.a_pos = a_pos
             self.b_pos = b_pos
 
@@ -211,7 +211,7 @@ class Solitaire():
         return new_state
 
     def func4(self,
-              state):
+              state: List):
         cur_state = deepcopy(state)
 
         if ((self.a_pos == len(cur_state) - 1) or
@@ -220,8 +220,8 @@ class Solitaire():
 
         new_state = []
         pos = self.__obj_to_pos(cur_state, -1)
-        new_state.append((cur_state[pos:-1]))
-        new_state.append(cur_state[:pos])
+        new_state.extend(cur_state[pos:-1])
+        new_state.extend(cur_state[:pos])
         new_state.append(cur_state[-1])
 
         self.a_pos = abs(pos - self.a_pos)
@@ -234,7 +234,7 @@ class Solitaire():
         return new_state
 
     def make_gamma(self,
-                   state):
+                   state: List):
         cur_state = deepcopy(state)
 
         pos = self.__obj_to_pos(cur_state, 0)
