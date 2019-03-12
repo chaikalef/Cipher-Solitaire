@@ -51,7 +51,7 @@ class AdjacencyMatrix():
                 self.matrix[num_of_old][num_of_new] = num_of_func
             else:
                 with open(self.flag + '_notes.txt', 'a') as file:
-                    print(f'Please, change this in future', file=file)
+                    print(f'Please, change this in the future', file=file)
                     print(f'old_state: {old_state}', file=file)
                     print(f'new_state: {new_state}', file=file)
                     print(f'old func: {self.matrix[num_of_old][num_of_new]}',
